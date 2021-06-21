@@ -77,7 +77,18 @@ function buildList() {
             })(list[i]));
 
             var delBtn = document.getElementsByClassName('delete')[i];
-            delBtn.addEventListener('click', deleteTask);
+            delBtn.addEventListener('click', (function(item) {
+                return function() {
+                    deleteTask(item);
+                };
+            })(list[i]));
+
+            var title = document.getElementsByClassName('title')[i];
+            title.addEventListener('click', (function(item) {
+                return function() {
+                    markDone(item);
+                };
+            })(list[i]));
         }
     });
 }
@@ -144,8 +155,28 @@ function submitChangeTask(id) {
 }
 
 
-function deleteTask() {
-    alert('Are you sure you want to delete this task ?');
+function deleteTask(item) {
+    if(confirm('Are you sure you want to delete this task ?')) {
+        var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
+
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+        })
+        .then(function(response) {
+            buildList();
+        });
+    } 
+}
+
+
+function markDone(item) {
+    item.completed = !item.completed;
+
+    var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
 }
 
 buildList();
