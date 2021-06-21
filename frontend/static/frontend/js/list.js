@@ -38,10 +38,8 @@ function getCookie(name) {
 const csrftoken = getCookie('csrftoken');
 var activeItem = null;
 
-
 function buildList() {
-    var wrapper = document.getElementById('list-wrapper');
-    wrapper.innerHTML = '';
+    var wrapper = document.getElementById('list-wrapper');              
 
     var url = 'http://127.0.0.1:8000/api/tasklist/';
 
@@ -52,10 +50,22 @@ function buildList() {
 
         var list = data;
         for(var i in list) {
+            var title = `<span class="title">${list[i].title}</span>`;
+
+            if( list[i].completed == true ) {
+                title = `<strike class="title">${list[i].title}</strike>`;
+            }
+            
+            try {
+                document.getElementById(`data-row-${list[i].id}`).remove();
+            } catch(err) {
+
+            }
+
             var item = `
             <div id="data-row-${list[i].id}" class="task-wrapper flex-wrapper">
                 <div style="flex: 7;">
-                    <span class="title">${list[i].title}</span>
+                    ${title}
                 </div>
                 <div style="flex: 1;">
                     <button class="btn btn-sm btn-outline-info edit">Edit</button>
@@ -159,6 +169,7 @@ function deleteTask(item) {
     if(confirm('Are you sure you want to delete this task ?')) {
         var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
 
+        document.getElementById(`data-row-${item.id}`).remove();
         fetch(url, {
             method: 'DELETE',
             headers: {
@@ -177,6 +188,18 @@ function markDone(item) {
     item.completed = !item.completed;
 
     var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
+
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({'title': item.title, 'completed': item.completed}),
+    })
+    .then(function(response) {
+        buildList();
+    });
 }
 
 buildList();
