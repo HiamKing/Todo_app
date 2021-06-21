@@ -36,11 +36,12 @@ function getCookie(name) {
 }
 
 const csrftoken = getCookie('csrftoken');
+var activeItem = null;
 
 
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');
-    wrapper.innerHTML = ''
+    wrapper.innerHTML = '';
 
     var url = 'http://127.0.0.1:8000/api/tasklist/';
 
@@ -52,7 +53,7 @@ function buildList() {
         var list = data;
         for(var i in list) {
             var item = `
-            <div id="data-row-${i}" class="task-wrapper flex-wrapper">
+            <div id="data-row-${list[i].id}" class="task-wrapper flex-wrapper">
                 <div style="flex: 7;">
                     <span class="title">${list[i].title}</span>
                 </div>
@@ -66,7 +67,19 @@ function buildList() {
             `
             wrapper.innerHTML += item;
         }
-    })
+
+        for(var i in list) {
+            var editBtn = document.getElementsByClassName('edit')[i];
+            editBtn.addEventListener('click', (function(item) {
+                return function() {
+                    editTask(item);
+                }
+            })(list[i]));
+
+            var delBtn = document.getElementsByClassName('delete')[i];
+            delBtn.addEventListener('click', deleteTask);
+        }
+    });
 }
 
 
@@ -87,12 +100,55 @@ function submitTask(e) {
     .then(function(response) {
         buildList();
         document.getElementById('form').reset();
-    })
-
+    });
 }
 
 
+function editTask(item) {
+    console.log(item.title);
+    var rowId = 'data-row-'+ `${item.id}`;
+    choseRow = document.getElementById(rowId);
+    choseRow.innerHTML = `
+    <div style="flex: 7;">
+        <input type="text" value="${item.title}" id="change_data"></input>
+    </div>
+    <div style="flex: 1;">
+        <button class="btn btn-sm btn-outline-info change">Change</button>
+    </div>
+    `;
+    var submitChangeBtn = choseRow.getElementsByClassName('change');
+    submitChangeBtn[0].addEventListener('click', function() {
+        submitChangeTask(item.id);
+    });
+}
+
+
+function submitChangeTask(id) {
+    var url = `http://127.0.0.1:8000/api/tasklist/${id}/`;
+
+    var dataChange = document.getElementById('change_data').value;
+
+    console.log(dataChange);
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({'title': dataChange}),
+    })
+    .then(function(response) {
+        buildList();
+    });
+   // buildList();
+}
+
+
+function deleteTask() {
+    alert('Are you sure you want to delete this task ?');
+}
+
 buildList();
 
-var form = document.getElementById('form-wrapper')
-form.addEventListener('submit', submitTask)
+var form = document.getElementById('form-wrapper');
+form.addEventListener('submit', submitTask);
