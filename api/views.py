@@ -9,7 +9,7 @@ from .serializers import TaskSerializer
 # Create your views here.
 class TaskAction(APIView):
     def get(self, request):
-        tasks = TaskSerializer(Task.objects.all(), many=True)
+        tasks = TaskSerializer(Task.objects.all().order_by('-id'), many=True)
         return Response(data=tasks.data, status=status.HTTP_200_OK)
 
     def post(self, request):
