@@ -1,12 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To do</title>
+
+    <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+    <!-- <style>
+        .loginbtn {
+            width: 100px;
+            height: 100px;
+        }
+    </style> -->
 </head>
 <body>
-    
+    <div class="navbar">
+        <button class="loginbtn" >Login</button>
+        <button class="loginbtn" >Register</button>
+    </div>
+    <div>
+        <h1 style="text-align: center; color:antiquewhite; ">Welcome to Todo app</h1>
+    </div>
 </body>
 </html>
