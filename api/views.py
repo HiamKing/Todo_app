@@ -1,4 +1,5 @@
-from django.contrib.auth import authenticate, login
+from datetime import datetime, timedelta
+from rest_framework import response
 from rest_framework.exceptions import AuthenticationFailed
 from .models import Task
 from django.contrib.auth.models import User
@@ -6,6 +7,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import TaskSerializer, UserSerializer
+import jwt
+
 
 # Create your views here.
 class TaskAction(APIView):
@@ -46,7 +49,7 @@ class TaskDetailAction(APIView):
             task = TaskSerializer(instance=task, data=request.data)
 
             if not task.is_valid():
-                return Response('Du lieu    khong hop le', status=status.HTTP_400_BAD_REQUEST)
+                return Response('Du lieu khong hop le', status=status.HTTP_400_BAD_REQUEST)
             
             task.save()
             return Response('Sua oke', status=status.HTTP_200_OK)
@@ -72,18 +75,34 @@ class LoginView(APIView):
         username = request.data['username']
         password = request.data['password']
         
-        user = authenticate(request, username=username, password=password)
+        try:
+            user = User.objects.get(username=username)
+        except:
+            raise AuthenticationFailed('User not found')
 
-        user = User.objects.get(username=username)
-        if user is None:
+        if not user.check_password(password):
             raise AuthenticationFailed('Wrong password')
         
-        login(request, user)
-        return Response('Login success')
+        payload = {
+            'id': user.id,
+            'exp': datetime.utcnow() + timedelta(minutes=60),
+            'iat': datetime.utcnow()
+        }
+
+        token = jwt.encode(payload, 'secret',algorithm='HS256')
+        
+        response = Response()
+        response.set_cookie(key='jwt', value=token, httponly=True)
+        response.data = {
+            'jwt': token
+        }
+        return response
 
 
 class RegisterView(APIView):
+    
     def post(self, request):
+        print(authenticate(request))
         user = UserSerializer(data=request.data)
 
         if not user.is_valid():
