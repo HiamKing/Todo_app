@@ -1,10 +1,11 @@
+from django.contrib.auth import authenticate, login
+from rest_framework.exceptions import AuthenticationFailed
 from .models import Task
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from .serializers import TaskSerializer
+from .serializers import TaskSerializer, UserSerializer
 
 # Create your views here.
 class TaskAction(APIView):
@@ -64,4 +65,29 @@ class TaskDetailAction(APIView):
             return Response('Xoa oke', status=status.HTTP_200_OK)
         else:
             return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
+
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data['username']
+        password = request.data['password']
         
+        user = authenticate(request, username=username, password=password)
+
+        user = User.objects.get(username=username)
+        if user is None:
+            raise AuthenticationFailed('Wrong password')
+        
+        login(request, user)
+        return Response('Login success')
+
+
+class RegisterView(APIView):
+    def post(self, request):
+
+        user = UserSerializer(data=request.data)
+        if not user.is_valid():
+            raise AuthenticationFailed(user.errors)
+        
+        user.save()
+        return Response('Success')
