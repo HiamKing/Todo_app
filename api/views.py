@@ -84,10 +84,12 @@ class LoginView(APIView):
 
 class RegisterView(APIView):
     def post(self, request):
-
         user = UserSerializer(data=request.data)
+
         if not user.is_valid():
             raise AuthenticationFailed(user.errors)
-        
+        password = user.validated_data.pop('password', None)
+        new_user = user.save()
+        new_user.set_password(password)
         user.save()
         return Response('Success')
