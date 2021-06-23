@@ -37,6 +37,13 @@ h1, h2, h3, h4, h5, p, span, strike {
     color: #fff;
 }
 
+
+#opentitle {
+    text-align: center;
+    color:antiquewhite;
+    margin-top: 200px;
+}
+
 .flex-wrapper {
     display: flex;
 }
@@ -52,5 +59,18 @@ h1, h2, h3, h4, h5, p, span, strike {
 
 .loginbtn {
     width: 100px;
-    height: 100px;
+    height: 20px;
+    background-color: #9DF1FF;
+    font-family: 'Montserrat', sans-serif;
+    border: 2px;
+    border-radius: 50px;
+}
+
+.loginbtn:hover {
+	background: #00D2FF;
+	letter-spacing: 1px;
+	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+	box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+	transition: all 0.4s ease 0s;
 }
