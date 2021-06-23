@@ -9,6 +9,10 @@ h1, h2, h3, h4, h5, p, span, strike {
     font-family: 'Montserrat', sans-serif;
 }
 
+.flex-wrapper {
+    display: flex;
+}
+
 #task-container {
     max-width: 600px;
     margin: 0 auto;
@@ -37,17 +41,6 @@ h1, h2, h3, h4, h5, p, span, strike {
     color: #fff;
 }
 
-
-#opentitle {
-    text-align: center;
-    color:antiquewhite;
-    margin-top: 200px;
-}
-
-.flex-wrapper {
-    display: flex;
-}
-
 .task-wrapper {
     margin: 5px;
     padding: 5px;
@@ -57,20 +50,61 @@ h1, h2, h3, h4, h5, p, span, strike {
     color: #686868;
 }
 
-.loginbtn {
+.btn {
     width: 100px;
-    height: 20px;
+    height: 30px;
+    margin-right: 10px;
     background-color: #9DF1FF;
     font-family: 'Montserrat', sans-serif;
     border: 2px;
     border-radius: 50px;
 }
 
-.loginbtn:hover {
+#navbar {
+    flex-direction: row-reverse;
+}
+
+.btn:hover {
 	background: #00D2FF;
 	letter-spacing: 1px;
-	-webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-	-moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
-	box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+	-webkit-box-shadow: 0px 5px 20px -10px rgba(0,0,0,0.57);
+	-moz-box-shadow: 0px 5px 20px -10px rgba(0,0,0,0.57);
+	box-shadow: 5px 20px -10px rgba(0,0,0,0.57);
 	transition: all 0.4s ease 0s;
 }
+
+#opentitle {
+    text-align: center;
+    color:antiquewhite;
+    margin-top: 200px;
+}
+
+#registerbox {
+    width: 500px;
+    height: 400px;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color:#84FFFF99;
+    margin: 50px auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-input-wrapper {
+    margin-left: 20px;
+    align-items: center;
+}
+
+#register-row {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#login-input {
+    border-radius: 5px;
+}
+
+#login-submit {
+    margin-top: 15px;
+}
+

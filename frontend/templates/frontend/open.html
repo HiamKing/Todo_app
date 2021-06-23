@@ -8,11 +8,13 @@
     <title>To do</title>
 
     <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+
+    <script src="{% static 'frontend/js/open.js' %}"></script>
 </head>
 <body>
-    <div class="navbar">
-        <button class="loginbtn" >Login</button>
-        <button class="loginbtn" >Register</button>
+    <div class="flex-wrapper" id="navbar">
+        <a href="http://127.0.0.1:8000/register"><button class="btn">Register</button></a>
+        <a href="http://127.0.0.1:8000/login"><button class="btn">Login</button></a>
     </div>
     <div>
         <h1 id="opentitle">Welcome to Todo app</h1>
