@@ -12,11 +12,15 @@ import jwt
 
 # Create your views here.
 class TaskAction(APIView):
-    def get(self, request):
-        tasks = TaskSerializer(Task.objects.all().order_by('-id'), many=True)
-        return Response(data=tasks.data, status=status.HTTP_200_OK)
+    def get(self, request, id):
+        user_task = TaskSerializer(Task.objects.filter(user_id=id).order_by('-id'), many=True)
 
-    def post(self, request):
+        if user_task:
+            return Response(data=user_task.data, status=status.HTTP_200_OK)
+        else:
+            return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
+
+    def post(self, request, id):
         task = TaskSerializer(data=request.data)
 
         if not task.is_valid():
@@ -28,20 +32,10 @@ class TaskAction(APIView):
 
 
 class TaskDetailAction(APIView):
-    def get(self, request, id):
-        try:
-            task = TaskSerializer(Task.objects.get(pk=id))    
-        except:
-            task = None
-
-        if task:
-            return Response(data=task.data, status=status.HTTP_200_OK)
-        else:
-            return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
     
-    def put(self, request, id):
+    def put(self, request, user_id, task_id):
         try:
-            task = Task.objects.get(pk=id)
+            task = Task.objects.get(pk=task_id)
         except:
             task = None
 
@@ -56,14 +50,13 @@ class TaskDetailAction(APIView):
         else:
             return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
 
-    def delete(self, request, id):
+    def delete(self, request, user_id, task_id):
         try:
-            task = Task.objects.get(pk=id)
+            task = Task.objects.get(pk=task_id)
         except:
             task = None
 
         if task:
-
             task.delete()
             return Response('Xoa oke', status=status.HTTP_200_OK)
         else:
@@ -94,7 +87,8 @@ class LoginView(APIView):
         response = Response()
         response.set_cookie(key='jwt', value=token, httponly=True)
         response.data = {
-            'jwt': token
+            'id': user.id,
+            'username': user.username
         }
         return response
 
@@ -102,7 +96,7 @@ class LoginView(APIView):
 class RegisterView(APIView):
     
     def post(self, request):
-        print(authenticate(request))
+
         user = UserSerializer(data=request.data)
 
         if not user.is_valid():

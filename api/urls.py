@@ -6,8 +6,8 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('tasklist/', TaskAction.as_view()),
-    path('tasklist/<int:id>/', TaskDetailAction.as_view()),
+    path('tasklist/<int:id>/', TaskAction.as_view()),
+    path('tasklist/<int:user_id>/<int:task_id>/', TaskDetailAction.as_view()),
     path('login/', LoginView.as_view()),
     path('register/', RegisterView.as_view()),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
