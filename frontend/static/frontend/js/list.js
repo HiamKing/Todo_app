@@ -166,15 +166,14 @@ function deleteTask(item) {
 function markDone(item) {
     item.completed = !item.completed;
 
-    var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
+    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${item.id}/`;
 
     fetch(url, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
-            'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({'title': item.title, 'completed': item.completed}),
+        body: JSON.stringify({'user_id': user_id, 'title': item.title, 'completed': item.completed}),
     })
     .then(function(response) {
         buildList();

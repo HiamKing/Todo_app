@@ -110,7 +110,10 @@ function register() {
                     error ++;
                 }
             } else {
-                location.replace('http://127.0.0.1:8000/login/');
+                body = document.getElementById('registerbox');
+                body.innerHTML = `
+                    <p>Register success. Do you want to <a href="http://127.0.0.1:8000/login/">login</a>?</p>
+                `;
             }
         });
     }
