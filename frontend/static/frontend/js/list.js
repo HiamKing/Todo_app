@@ -161,7 +161,6 @@ function submitChangeTask(id) {
     .then(function(response) {
         buildList();
     });
-   // buildList();
 }
 
 

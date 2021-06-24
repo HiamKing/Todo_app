@@ -32,7 +32,6 @@ class TaskAction(APIView):
 
 
 class TaskDetailAction(APIView):
-    
     def put(self, request, user_id, task_id):
         try:
             task = Task.objects.get(pk=task_id)
