@@ -19,29 +19,11 @@
     -- CSRF Token
 */
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-const csrftoken = getCookie('csrftoken');
-var activeItem = null;
+var user_id = localStorage.getItem('user_id')
 
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');              
-
-    var url = 'http://127.0.0.1:8000/api/tasklist/';
+    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/`
 
     fetch(url)
     .then((resp) => resp.json())
@@ -107,16 +89,16 @@ function buildList() {
 function submitTask(e) {
     e.preventDefault();
     console.log('Form submited');
-    var url = 'http://127.0.0.1:8000/api/tasklist/';
+
+    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/`;
     var title = document.getElementById('title').value
 
     fetch(url, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
-            'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({'title': title}),
+        body: JSON.stringify({'user_id': user_id, 'title': title}),
     })
     .then(function(response) {
         buildList();
@@ -145,7 +127,7 @@ function editTask(item) {
 
 
 function submitChangeTask(id) {
-    var url = `http://127.0.0.1:8000/api/tasklist/${id}/`;
+    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${id}/`;
 
     var dataChange = document.getElementById('change_data').value;
 
@@ -154,9 +136,8 @@ function submitChangeTask(id) {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
-            'X-CSRFToken': csrftoken,
         },
-        body: JSON.stringify({'title': dataChange}),
+        body: JSON.stringify({'user_id': user_id, 'title': dataChange}),
     })
     .then(function(response) {
         buildList();
@@ -166,15 +147,14 @@ function submitChangeTask(id) {
 
 function deleteTask(item) {
     if(confirm('Are you sure you want to delete this task ?')) {
-        var url = `http://127.0.0.1:8000/api/tasklist/${item.id}/`;
+        var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${item.id}/`;
 
         document.getElementById(`data-row-${item.id}`).remove();
         fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
-                'X-CSRFToken': csrftoken,
-            },
+            }
         })
         .then(function(response) {
             buildList();

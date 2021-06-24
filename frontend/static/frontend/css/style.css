@@ -50,7 +50,7 @@ h1, h2, h3, h4, h5, p, span, strike {
     color: #686868;
 }
 
-.btn {
+#login-btn, #register-btn, #login-submit {
     width: 100px;
     height: 30px;
     margin-right: 10px;
@@ -95,7 +95,7 @@ h1, h2, h3, h4, h5, p, span, strike {
     align-items: center;
 }
 
-#register-row {
+.register-row {
     margin-top: 10px;
     margin-bottom: 5px;
 }

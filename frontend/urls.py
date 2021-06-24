@@ -7,5 +7,5 @@ urlpatterns = [
     path('', open_view),
     path('register/', register_view),
     path('login/', login_view),
-    path('tasklist/<int:id>/', task_list_view),
+    path('tasklist/', task_list_view),
 ]
