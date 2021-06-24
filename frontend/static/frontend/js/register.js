@@ -12,7 +12,7 @@ function checkRePassword() {
         var area = document.getElementById('repassword-errors');
 
         area.innerHTML += `
-            <h6 style="color: red; margin: auto;" id="repassword-alert">Re-password not same with Password</h6>
+            <h6 style="color: red; margin: auto;" id="repassword-alert">Re-password not same with Password.</h6>
         `;
         error ++;
     }
@@ -30,7 +30,7 @@ function checkUserName() {
         var area = document.getElementById('username-errors');
         
         area.innerHTML += `
-            <h6 style="color: red; margin: auto;" id="username-alert">Username length minimun is 6 characters</h6>
+            <h6 style="color: red; margin: auto;" id="username-alert">Username length minimun is 6 characters.</h6>
         `;
         error ++;
     }
@@ -48,10 +48,20 @@ function checkPassword() {
         var area = document.getElementById('password-errors');
         
         area.innerHTML += `
-            <h6 style="color: red; margin: auto;" id="password-alert">Password length minimun is 6 characters</h6>
+            <h6 style="color: red; margin: auto;" id="password-alert">Password length minimun is 6 characters.</h6>
         `;
         error ++;
     }
+
+    checkRePassword();
+    console.log(error);
+}
+
+function checkEmail() {
+    try {
+        document.getElementById('email-alert').remove();
+        error --;
+    } catch(err) {}
     console.log(error);
 }
 
@@ -63,6 +73,7 @@ function register() {
     checkUserName();
     checkPassword();
     checkRePassword();
+    checkEmail();
     if( !error ) {
         console.log('send');
         fetch(url, {
@@ -76,20 +87,31 @@ function register() {
                 'email': document.getElementById('login-input email').value
             })
         })
-        .then(function(resp) {
-            if(!resp.ok) {
-                list = resp.json();
-                //console.log(list);
-                console.log(list);
-                throw Error(resp.statusText);
-            }
-            return resp.json();
-        })
+        .then(resp => resp.json())
         .then(function(data) {
-            console.log(data);
-        })
-        .catch(function(error) {
-            console.log(error);
+            if( typeof(data) != 'string' ) {
+                if(data.username != null) {
+                    
+                    var area = document.getElementById('username-errors');
+                    
+                    area.innerHTML += `
+                        <h6 style="color: red; margin: auto;" id="username-alert">${data.username[0]}</h6>
+                    `;
+                    error ++;
+                }
+                
+                if(data.email != null) {
+                    
+                    var area = document.getElementById('email-errors');
+                    
+                    area.innerHTML += `
+                        <h6 style="color: red; margin: auto;" id="email-alert">${data.email[0]}</h6>
+                    `;
+                    error ++;
+                }
+            } else {
+                location.replace('http://127.0.0.1:8000/login/');
+            }
         });
     }
 }
@@ -105,5 +127,8 @@ inputArea.addEventListener('keyup', checkUserName);
 
 var inputArea = document.getElementById('login-input password');
 inputArea.addEventListener('keyup', checkPassword);
+
+var inputArea = document.getElementById('login-input email');
+inputArea.addEventListener('click', checkEmail);
 
 

@@ -99,7 +99,6 @@ class RegisterView(APIView):
         user = UserSerializer(data=request.data)
 
         if not user.is_valid():
-            print(user.error_messages)
             raise AuthenticationFailed(user.errors)
         password = user.validated_data.pop('password', None)
         new_user = user.save()
