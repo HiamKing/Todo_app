@@ -21,13 +21,15 @@
         </div>
     </div>
     <div id="page-login" style="display: none;">
-        <div class="flex-wrapper" id="registerbox">
+        <div class="flex-wrapper" id="loginbox">
             <div class="form-input-wrapper">
                 <h4 id="register-row">Username: <input type="text" id="login-input username"></h4>
-                <h4 id="register-row">Password: <input type="password" id="login-input password"></h4>
+                <h4 id="register-row">Password: <input type="password" id="login-input password" style="margin-left: 3.5px;"></h4>
+            </div>
+            <div id="login-errors">
             </div>
             <button class="btn" id="login-submit">Sign in</button>
-            <p>Don't have an account? <a href="http://127.0.0.1:8000/register">Register</a></p>
+            <p>Don't have an account? <a id="register-text" style="cursor: pointer;color: blue;text-decoration: underline;">Register</a></p>
         </div>
     </div>
     <div id="page-register" style="display: none;">
@@ -35,27 +37,27 @@
             <div class="form-input-wrapper">
                 <h4 class="register-row">Username <span style="color: red;">*</span></h4>
                 <input type="text" id="register-input username">
-                <div id="username-errors">
+                <div id="register-username-errors">
                 </div>
                 <h4 class="register-row">Password  <span style="color: red;">*</span></h4>
                 <input type="password" id="register-input password">
-                <div id="password-errors">
+                <div id="register-password-errors">
                 </div>
                 <h4 class="register-row">Re-Password  <span style="color: red;">*</span></h4>
                 <input type="password" id="register-input repassword">
-                <div id="repassword-errors">
+                <div id="register-repassword-errors">
                 </div>
                 <h4 class="register-row">Email</h4>
                 <input type="text" id="register-input email">
-                <div id="email-errors">
+                <div id="register-email-errors">
                 </div>
             </div>
             <button class="btn" id="register-submit">Sign up</button>
-            <p>Having an account? <a href="http://127.0.0.1:8000/login">Login</a></p>
+            <p>Having an account? <a id="login-text" style="cursor: pointer;color: blue;text-decoration: underline;">Login</a></p>
         </div>
     </div>
+    <script type="module" src="{% static 'frontend/js/register.js' %}"></script>
     <script src="{% static 'frontend/js/login.js' %}"></script>
-    <script src="{% static 'frontend/js/register.js/' %}"></script>
-    <script src="{% static 'frontend/js/open.js/' %}"></script>
+    <script type="module" src="{% static 'frontend/js/open.js' %}"></script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+import {reLoad, curPage} from './open.js';
+
 var error = 0;
 
 function checkRePassword() {
@@ -9,7 +11,7 @@ function checkRePassword() {
     } catch(err) {}
 
     if(password != rePassword) {
-        var area = document.getElementById('repassword-errors');
+        var area = document.getElementById('register-repassword-errors');
 
         area.innerHTML += `
             <h6 style="color: red; margin: auto;" id="repassword-alert">Re-password not same with Password.</h6>
@@ -22,15 +24,15 @@ function checkRePassword() {
 function checkUserName() {
     var username = document.getElementById('register-input username').value;
     try {
-        document.getElementById('username-alert').remove();
+        document.getElementById('register-username-alert').remove();
         error --;
     } catch(err) {}
     
     if(username.length < 6) {
-        var area = document.getElementById('username-errors');
+        var area = document.getElementById('register-username-errors');
         
         area.innerHTML += `
-            <h6 style="color: red; margin: auto;" id="username-alert">Username length minimun is 6 characters.</h6>
+            <h6 style="color: red; margin: auto;" id="register-username-alert">Username length minimun is 6 characters.</h6>
         `;
         error ++;
     }
@@ -45,7 +47,7 @@ function checkPassword() {
     } catch(err) {}
     
     if(password.length < 6) {
-        var area = document.getElementById('password-errors');
+        var area = document.getElementById('register-password-errors');
         
         area.innerHTML += `
             <h6 style="color: red; margin: auto;" id="password-alert">Password length minimun is 6 characters.</h6>
@@ -59,7 +61,7 @@ function checkPassword() {
 
 function checkEmail() {
     try {
-        document.getElementById('email-alert').remove();
+        document.getElementById('register-email-alert').remove();
         error --;
     } catch(err) {}
     console.log(error);
@@ -68,12 +70,11 @@ function checkEmail() {
 function register() {
     var url = 'http://127.0.0.1:8000/api/register/';
 
-    var email = document.getElementById('register-input email').value;
-
     checkUserName();
     checkPassword();
     checkRePassword();
     checkEmail();
+
     if( !error ) {
         console.log('send');
         fetch(url, {
@@ -92,28 +93,59 @@ function register() {
             if( typeof(data) != 'string' ) {
                 if(data.username != null) {
                     
-                    var area = document.getElementById('username-errors');
+                    var area = document.getElementById('register-username-errors');
                     
                     area.innerHTML += `
-                        <h6 style="color: red; margin: auto;" id="username-alert">${data.username[0]}</h6>
+                        <h6 style="color: red; margin: auto;" id="register-username-alert">${data.username[0]}</h6>
                     `;
                     error ++;
                 }
                 
                 if(data.email != null) {
                     
-                    var area = document.getElementById('email-errors');
+                    var area = document.getElementById('register-email-errors');
                     
                     area.innerHTML += `
-                        <h6 style="color: red; margin: auto;" id="email-alert">${data.email[0]}</h6>
+                        <h6 style="color: red; margin: auto;" id="register-email-alert">${data.email[0]}</h6>
                     `;
                     error ++;
                 }
             } else {
-                body = document.getElementById('registerbox');
+                var body = document.getElementById('registerbox');
                 body.innerHTML = `
-                    <p>Register success. Do you want to <a href="http://127.0.0.1:8000/login/">login</a>?</p>
+                    <p>Register success. Do you want to <a id="register-login-text" style="cursor: pointer;color: blue;text-decoration: underline;">Login</a>?</p>
                 `;
+                var text = document.getElementById('register-login-text');
+                text.addEventListener('click', function() {
+                    var body = document.getElementById('registerbox');
+                    body.innerHTML = `
+                    <div class="form-input-wrapper">
+                        <h4 class="register-row">Username <span style="color: red;">*</span></h4>
+                        <input type="text" id="register-input username">
+                        <div id="register-username-errors">
+                        </div>
+                        <h4 class="register-row">Password  <span style="color: red;">*</span></h4>
+                        <input type="password" id="register-input password">
+                        <div id="register-password-errors">
+                        </div>
+                        <h4 class="register-row">Re-Password  <span style="color: red;">*</span></h4>
+                        <input type="password" id="register-input repassword">
+                        <div id="register-repassword-errors">
+                        </div>
+                        <h4 class="register-row">Email</h4>
+                        <input type="text" id="register-input email">
+                        <div id="register-email-errors">
+                        </div>
+                    </div>
+                    <button class="btn" id="register-submit">Sign up</button>
+                    <p>Having an account? <a id="login-text" style="cursor: pointer;color: blue;text-decoration: underline;">Login</a></p>
+                    `;
+                    var text = document.getElementById('login-text');
+                    text.addEventListener('click', function() {
+                        reLoad(curPage, 'page-login');
+                    });
+                    reLoad(curPage, 'page-login');
+                });
             }
         });
     }
@@ -125,13 +157,14 @@ registerBtn.addEventListener('click', register);
 var inputArea = document.getElementById('register-input repassword');
 inputArea.addEventListener('keyup', checkRePassword);
 
-var inputArea = document.getElementById('register-input username');
+inputArea = document.getElementById('register-input username');
 inputArea.addEventListener('keyup', checkUserName);
 
-var inputArea = document.getElementById('register-input password');
+inputArea = document.getElementById('register-input password');
 inputArea.addEventListener('keyup', checkPassword);
 
-var inputArea = document.getElementById('register-input email');
+inputArea = document.getElementById('register-input email');
 inputArea.addEventListener('click', checkEmail);
+
 
 

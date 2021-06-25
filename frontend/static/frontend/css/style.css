@@ -75,7 +75,7 @@ body {
     margin-top: 200px;
 }
 
-#registerbox {
+#registerbox, #loginbox {
     width: 500px;
     height: 400px;
     flex-direction: column;

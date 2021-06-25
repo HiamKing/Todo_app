@@ -12,9 +12,22 @@ function login() {
     })
     .then(resp => resp.json())
     .then(function(data) {
-        localStorage.setItem('user_id', data.id);
-        localStorage.setItem('username', data.username);
-        location.replace('http://127.0.0.1:8000/tasklist/');
+        if( data.detail != null ) {
+            try {
+                document.getElementById('login-alert').remove();
+
+            } catch( err ) {}
+
+            var area = document.getElementById('login-errors');
+                
+            area.innerHTML += `
+                <h6 style="color: red; width: wrap-content; height: wrap-content; margin: 0;" id="login-alert">${data.detail}</h6>
+            `;
+        } else {
+            localStorage.setItem('user_id', data.id);
+            localStorage.setItem('username', data.username);
+            location.replace('http://127.0.0.1:8000/tasklist/');
+        }
     });
 }
 
