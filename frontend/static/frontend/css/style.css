@@ -5,10 +5,6 @@ body {
     152, 126, 1) 43%, rgba(0, 212, 255, 1) 100%);
 }
 
-h1, h2, h3, h4, h5, p, span, strike {
-    font-family: 'Montserrat', sans-serif;
-}
-
 .flex-wrapper {
     display: flex;
 }
@@ -54,8 +50,8 @@ h1, h2, h3, h4, h5, p, span, strike {
     width: 100px;
     height: 30px;
     margin-right: 10px;
+    margin-top: 10px;
     background-color: #9DF1FF;
-    font-family: 'Montserrat', sans-serif;
     border: 2px;
     border-radius: 50px;
 }
