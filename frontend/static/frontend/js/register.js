@@ -1,8 +1,8 @@
 var error = 0;
 
 function checkRePassword() {
-    var password = document.getElementById('login-input password').value;
-    var rePassword = document.getElementById('login-input repassword').value;
+    var password = document.getElementById('register-input password').value;
+    var rePassword = document.getElementById('register-input repassword').value;
     try {
         document.getElementById('repassword-alert').remove();
         error --;
@@ -20,7 +20,7 @@ function checkRePassword() {
 }
 
 function checkUserName() {
-    var username = document.getElementById('login-input username').value;
+    var username = document.getElementById('register-input username').value;
     try {
         document.getElementById('username-alert').remove();
         error --;
@@ -38,7 +38,7 @@ function checkUserName() {
 }
 
 function checkPassword() {
-    var password = document.getElementById('login-input password').value;
+    var password = document.getElementById('register-input password').value;
     try {
         document.getElementById('password-alert').remove();
         error --;
@@ -68,7 +68,7 @@ function checkEmail() {
 function register() {
     var url = 'http://127.0.0.1:8000/api/register/';
 
-    var email = document.getElementById('login-input email').value;
+    var email = document.getElementById('register-input email').value;
 
     checkUserName();
     checkPassword();
@@ -82,9 +82,9 @@ function register() {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify({
-                'username': document.getElementById('login-input username').value,
-                'password': document.getElementById('login-input password').value,
-                'email': document.getElementById('login-input email').value
+                'username': document.getElementById('register-input username').value,
+                'password': document.getElementById('register-input password').value,
+                'email': document.getElementById('register-input email').value
             })
         })
         .then(resp => resp.json())
@@ -119,19 +119,19 @@ function register() {
     }
 }
 
-var registerBtn = document.getElementById('login-submit');
+var registerBtn = document.getElementById('register-submit');
 registerBtn.addEventListener('click', register);
 
-var inputArea = document.getElementById('login-input repassword');
+var inputArea = document.getElementById('register-input repassword');
 inputArea.addEventListener('keyup', checkRePassword);
 
-var inputArea = document.getElementById('login-input username');
+var inputArea = document.getElementById('register-input username');
 inputArea.addEventListener('keyup', checkUserName);
 
-var inputArea = document.getElementById('login-input password');
+var inputArea = document.getElementById('register-input password');
 inputArea.addEventListener('keyup', checkPassword);
 
-var inputArea = document.getElementById('login-input email');
+var inputArea = document.getElementById('register-input email');
 inputArea.addEventListener('click', checkEmail);
 
 

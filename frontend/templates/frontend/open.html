@@ -11,12 +11,51 @@
 
 </head>
 <body>
-    <div class="flex-wrapper" id="navbar">
-        <a href="http://127.0.0.1:8000/register"><button class="btn" id="register-btn">Register</button></a>
-        <a href="http://127.0.0.1:8000/login"><button class="btn" id="login-btn">Login</button></a>
+    <div id="page-open">
+        <div class="flex-wrapper" id="navbar">
+            <button class="btn" id="register-btn">Register</button>
+            <button class="btn" id="login-btn">Login</button>
+        </div>
+        <div>
+            <h1 id="opentitle">Welcome to Todo app</h1>
+        </div>
     </div>
-    <div>
-        <h1 id="opentitle">Welcome to Todo app</h1>
+    <div id="page-login" style="display: none;">
+        <div class="flex-wrapper" id="registerbox">
+            <div class="form-input-wrapper">
+                <h4 id="register-row">Username: <input type="text" id="login-input username"></h4>
+                <h4 id="register-row">Password: <input type="password" id="login-input password"></h4>
+            </div>
+            <button class="btn" id="login-submit">Sign in</button>
+            <p>Don't have an account? <a href="http://127.0.0.1:8000/register">Register</a></p>
+        </div>
     </div>
+    <div id="page-register" style="display: none;">
+        <div class="flex-wrapper" id="registerbox">
+            <div class="form-input-wrapper">
+                <h4 class="register-row">Username <span style="color: red;">*</span></h4>
+                <input type="text" id="register-input username">
+                <div id="username-errors">
+                </div>
+                <h4 class="register-row">Password  <span style="color: red;">*</span></h4>
+                <input type="password" id="register-input password">
+                <div id="password-errors">
+                </div>
+                <h4 class="register-row">Re-Password  <span style="color: red;">*</span></h4>
+                <input type="password" id="register-input repassword">
+                <div id="repassword-errors">
+                </div>
+                <h4 class="register-row">Email</h4>
+                <input type="text" id="register-input email">
+                <div id="email-errors">
+                </div>
+            </div>
+            <button class="btn" id="register-submit">Sign up</button>
+            <p>Having an account? <a href="http://127.0.0.1:8000/login">Login</a></p>
+        </div>
+    </div>
+    <script src="{% static 'frontend/js/login.js' %}"></script>
+    <script src="{% static 'frontend/js/register.js/' %}"></script>
+    <script src="{% static 'frontend/js/open.js/' %}"></script>
 </body>
 </html>

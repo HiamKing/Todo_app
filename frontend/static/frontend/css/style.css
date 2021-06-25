@@ -46,7 +46,7 @@ body {
     color: #686868;
 }
 
-#login-btn, #register-btn, #login-submit {
+#login-btn, #register-btn, #login-submit, #register-submit {
     width: 100px;
     height: 30px;
     margin-right: 10px;
@@ -96,11 +96,11 @@ body {
     margin-bottom: 5px;
 }
 
-#login-input {
+#login-input, #register-input {
     border-radius: 5px;
 }
 
-#login-submit {
+#login-submit, #register-submit {
     margin-top: 15px;
 }
 
