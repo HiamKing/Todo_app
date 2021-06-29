@@ -1,13 +1,12 @@
-var user_id = localStorage.getItem('user_id')
-
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');              
-    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/`
+    var url = `http://127.0.0.1:8000/api/tasklist/`
 
     fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
         console.log('Data', data);
+        if( data.error != null ) location.replace('http://127.0.0.1:8000/')
 
         var list = data;
         for(var i in list) {
@@ -69,7 +68,7 @@ function submitTask(e) {
     e.preventDefault();
     console.log('Form submited');
 
-    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/`;
+    var url = `http://127.0.0.1:8000/api/tasklist/`;
     var title = document.getElementById('title').value
 
     fetch(url, {
@@ -77,7 +76,7 @@ function submitTask(e) {
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify({'user_id': user_id, 'title': title}),
+        body: JSON.stringify({'title': title}),
     })
     .then(function(response) {
         buildList();
@@ -106,7 +105,7 @@ function editTask(item) {
 
 
 function submitChangeTask(id) {
-    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${id}/`;
+    var url = `http://127.0.0.1:8000/api/tasklist/`;
 
     var dataChange = document.getElementById('change_data').value;
 
@@ -116,7 +115,7 @@ function submitChangeTask(id) {
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify({'user_id': user_id, 'title': dataChange}),
+        body: JSON.stringify({'id': id, 'title': dataChange}),
     })
     .then(function(response) {
         buildList();
@@ -126,14 +125,15 @@ function submitChangeTask(id) {
 
 function deleteTask(item) {
     if(confirm('Are you sure you want to delete this task ?')) {
-        var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${item.id}/`;
+        var url = `http://127.0.0.1:8000/api/tasklist/`;
 
         document.getElementById(`data-row-${item.id}`).remove();
         fetch(url, {
             method: 'DELETE',
             headers: {
                 'Content-type': 'application/json',
-            }
+            },
+            body: JSON.stringify({'id': item.id})
         })
         .then(function(response) {
             buildList();
@@ -145,21 +145,40 @@ function deleteTask(item) {
 function markDone(item) {
     item.completed = !item.completed;
 
-    var url = `http://127.0.0.1:8000/api/tasklist/${user_id}/${item.id}/`;
+    var url = `http://127.0.0.1:8000/api/tasklist/`;
 
     fetch(url, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify({'user_id': user_id, 'title': item.title, 'completed': item.completed}),
+        body: JSON.stringify({'id': item.id, 'title': item.title, 'completed': item.completed}),
     })
     .then(function(response) {
         buildList();
     });
 }
 
+
+function logout() {
+    var url = 'http://127.0.0.1:8000/api/logout/';
+
+    fetch(url);
+
+    localStorage.removeItem('username');
+    location.replace('http://127.0.0.1:8000/')
+}
+
+
 buildList();
+
+var navbar = document.getElementById('navbar');
+navbar.innerHTML = `
+<h4 style="font-family: serif; margin: 10px 10px 0px 0px; color: #fff">Welcome ${localStorage.getItem('username')}, <a href="http://127.0.0.1:8000/" id="tasklist-logout-btn">Logout</a></h4>
+`;
+
+var btn = document.getElementById('tasklist-logout-btn')
+btn.addEventListener('click', logout)
 
 var form = document.getElementById('form-wrapper');
 form.addEventListener('submit', submitTask);

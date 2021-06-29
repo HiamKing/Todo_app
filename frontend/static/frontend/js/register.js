@@ -142,6 +142,8 @@ function register() {
                     `;
                     var text = document.getElementById('login-text');
                     text.addEventListener('click', function() {
+                        document.getElementById('login-input username').value = '';
+                        document.getElementById('login-input password').value = '';
                         reLoad(curPage, 'page-login');
                     });
                     reLoad(curPage, 'page-login');

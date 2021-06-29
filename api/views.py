@@ -12,54 +12,74 @@ import jwt
 
 # Create your views here.
 class TaskAction(APIView):
-    def get(self, request, id):
-        user_task = TaskSerializer(Task.objects.filter(user_id=id).order_by('-id'), many=True)
+    def get(self, request):
+        token = request.COOKIES.get('jwt')
 
-        if user_task:
-            return Response(data=user_task.data, status=status.HTTP_200_OK)
-        else:
-            return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
+        if not token:
+            return Response({'error': 'Authentication error'})
+        
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except:
+            return Response({'error': 'Authentication error'})
+        
+        user_task = TaskSerializer(Task.objects.filter(user_id=payload['id']).order_by('-id'), many=True)
 
-    def post(self, request, id):
+        return Response(data=user_task.data)
+
+    def post(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            return Response({'error': 'Authentication error'})
+        
+        try:
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+        except:
+            return Response({'error': 'Authentication error'})
+        user = User.objects.get(id=payload['id'])
         task = TaskSerializer(data=request.data)
 
         if not task.is_valid():
-            return Response('Du lieu khong hop le', status=status.HTTP_400_BAD_REQUEST)
-
-        task.save()
-        return Response('Luu thanh cong', status= status.HTTP_200_OK)
+            return Response({'error': 'Invalid data'})
+        task.save(user_id=user)
+        return Response({'message': 'Save success'})
     
+    def put(self, request):
+        token = request.COOKIES.get('jwt')
 
-
-class TaskDetailAction(APIView):
-    def put(self, request, user_id, task_id):
+        if not token:
+            return Response({'error': 'Authentication error'})
+        
         try:
-            task = Task.objects.get(pk=task_id)
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except:
-            task = None
+            return Response({'error': 'Authentication error'})
 
-        if task:
-            task = TaskSerializer(instance=task, data=request.data)
+        task = Task.objects.get(id=request.data['id'])
+        task = TaskSerializer(instance=task, data=request.data)
 
-            if not task.is_valid():
-                return Response('Du lieu khong hop le', status=status.HTTP_400_BAD_REQUEST)
+        if not task.is_valid():
+            return Response({'error': 'Invalid data'})
             
-            task.save()
-            return Response('Sua oke', status=status.HTTP_200_OK)
-        else:
-            return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
+        task.save()
+        return Response({'message':'Change success'})
 
-    def delete(self, request, user_id, task_id):
+    def delete(self, request):
+        token = request.COOKIES.get('jwt')
+
+        if not token:
+            return Response({'error': 'Authentication error'})
+        
         try:
-            task = Task.objects.get(pk=task_id)
+            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
         except:
-            task = None
+            return Response({'error': 'Authentication error'})
 
-        if task:
-            task.delete()
-            return Response('Xoa oke', status=status.HTTP_200_OK)
-        else:
-            return Response('Du lieu khong ton tai', status=status.HTTP_404_NOT_FOUND)
+        task = Task.objects.get(id=request.data['id'])
+
+        task.delete()
+        return Response({'message': 'Delete Success'})
 
 
 class LoginView(APIView):
@@ -86,16 +106,13 @@ class LoginView(APIView):
         response = Response()
         response.set_cookie(key='jwt', value=token, httponly=True)
         response.data = {
-            'id': user.id,
             'username': user.username
         }
         return response
 
 
 class RegisterView(APIView):
-    
     def post(self, request):
-
         user = UserSerializer(data=request.data)
 
         if not user.is_valid():
@@ -105,3 +122,14 @@ class RegisterView(APIView):
         new_user.set_password(password)
         user.save()
         return Response('Success')
+
+
+class LogoutView(APIView):
+    def get(self, request):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'message': 'Success'
+        }
+
+        return response

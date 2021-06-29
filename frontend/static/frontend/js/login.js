@@ -1,4 +1,4 @@
-function login() {
+function login() {  
     var url = 'http://127.0.0.1:8000/api/login/';
     var username = document.getElementById('login-input username').value;
     var password = document.getElementById('login-input password').value;
@@ -24,7 +24,6 @@ function login() {
                 <h6 style="color: red; width: wrap-content; height: wrap-content; margin: 0;" id="login-alert">${data.detail}</h6>
             `;
         } else {
-            localStorage.setItem('user_id', data.id);
             localStorage.setItem('username', data.username);
             location.replace('http://127.0.0.1:8000/tasklist/');
         }

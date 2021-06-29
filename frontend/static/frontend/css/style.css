@@ -60,7 +60,7 @@ body {
     flex-direction: row-reverse;
 }
 
-.btn:hover {
+#login-btn:hover, #register-btn:hover, #login-submit:hover, #register-submit:hover {
 	background: #00D2FF;
 	letter-spacing: 1px;
 	-webkit-box-shadow: 0px 5px 20px -10px rgba(0,0,0,0.57);

@@ -11,7 +11,7 @@ class Task(models.Model):
     completed = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
-        return self.user_id.username + ': ' + self.title
+        return self.user_id.username + ': ' + self.title + ' ' + str(self.id)
 
 
 
