@@ -1,12 +1,12 @@
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');              
-    var url = `http://127.0.0.1:8000/api/tasklist/`
+    var url = `http://127.0.0.1:8000/api/tasklist/`;
 
     fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
         console.log('Data', data);
-        if( data.error != null ) location.replace('http://127.0.0.1:8000/')
+        if( data.error != null ) location.replace('http://127.0.0.1:8000/');
 
         var list = data;
         for(var i in list) {
