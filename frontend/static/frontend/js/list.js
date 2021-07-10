@@ -1,12 +1,12 @@
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');              
-    var url = `http://127.0.0.1:8000/api/tasklist/`;
+    var url = `api/tasklist/`;
 
     fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
         console.log('Data', data);
-        if( data.error != null ) location.replace('http://127.0.0.1:8000/');
+        if( data.error != null ) location.replace('');
 
         var list = data;
         for(var i in list) {
@@ -68,7 +68,7 @@ function submitTask(e) {
     e.preventDefault();
     console.log('Form submited');
 
-    var url = `http://127.0.0.1:8000/api/tasklist/`;
+    var url = `api/tasklist/`;
     var title = document.getElementById('title').value
 
     fetch(url, {
@@ -105,7 +105,7 @@ function editTask(item) {
 
 
 function submitChangeTask(id) {
-    var url = `http://127.0.0.1:8000/api/tasklist/`;
+    var url = `api/tasklist/`;
 
     var dataChange = document.getElementById('change_data').value;
 
@@ -125,7 +125,7 @@ function submitChangeTask(id) {
 
 function deleteTask(item) {
     if(confirm('Are you sure you want to delete this task ?')) {
-        var url = `http://127.0.0.1:8000/api/tasklist/`;
+        var url = `api/tasklist/`;
 
         document.getElementById(`data-row-${item.id}`).remove();
         fetch(url, {
@@ -145,7 +145,7 @@ function deleteTask(item) {
 function markDone(item) {
     item.completed = !item.completed;
 
-    var url = `http://127.0.0.1:8000/api/tasklist/`;
+    var url = `api/tasklist/`;
 
     fetch(url, {
         method: 'PUT',
@@ -161,12 +161,12 @@ function markDone(item) {
 
 
 function logout() {
-    var url = 'http://127.0.0.1:8000/api/logout/';
+    var url = 'api/logout/';
 
     fetch(url);
 
     localStorage.removeItem('username');
-    location.replace('http://127.0.0.1:8000/')
+    location.replace('')
 }
 
 
@@ -174,7 +174,7 @@ buildList();
 
 var navbar = document.getElementById('navbar');
 navbar.innerHTML = `
-<h4 style="font-family: serif; margin: 10px 10px 0px 0px; color: #fff">Welcome ${localStorage.getItem('username')}, <a href="http://127.0.0.1:8000/" id="tasklist-logout-btn">Logout</a></h4>
+<h4 style="font-family: serif; margin: 10px 10px 0px 0px; color: #fff">Welcome ${localStorage.getItem('username')}, <a href="" id="tasklist-logout-btn">Logout</a></h4>
 `;
 
 var btn = document.getElementById('tasklist-logout-btn')

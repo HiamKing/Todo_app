@@ -68,7 +68,7 @@ function checkEmail() {
 }
 
 function register() {
-    var url = 'http://127.0.0.1:8000/api/register/';
+    var url = 'api/register/';
 
     checkUserName();
     checkPassword();

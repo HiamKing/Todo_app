@@ -14,7 +14,7 @@ function checkLogin() {
         console.log(name);
         var navbar = document.getElementById('navbar');
         navbar.innerHTML = `
-        <h4 style="font-size: 20px; margin: 10px 10px 0px 0px; color: #fff">Welcome ${name}, <a href="http://127.0.0.1:8000/" id="logout-btn">Logout</a></h4>
+        <h4 style="font-size: 20px; margin: 10px 10px 0px 0px; color: #fff">Welcome ${name}, <a href="" id="logout-btn">Logout</a></h4>
         `;
 
         var logoutBtn = document.getElementById('logout-btn');
@@ -28,7 +28,7 @@ function checkLogin() {
 
         var loginBtn = document.getElementById('login-btn');
         loginBtn.addEventListener('click', function() {
-            if( localStorage.getItem('username') !== null ) location.replace('http://127.0.0.1:8000/tasklist')
+            if( localStorage.getItem('username') !== null ) location.replace('tasklist/')
             reLoad(curPage, 'page-login');
         });
 
@@ -40,7 +40,7 @@ function checkLogin() {
 }
 
 function logout() {
-    var url = 'http://127.0.0.1:8000/api/logout/';
+    var url = 'api/logout/';
 
     fetch(url);
 
@@ -54,7 +54,7 @@ text.addEventListener('click', function() {
 
 text = document.getElementById('login-text');
 text.addEventListener('click', function() {
-    if( localStorage.getItem('username') !== null ) location.replace('http://127.0.0.1:8000/tasklist')
+    if( localStorage.getItem('username') !== null ) location.replace('tasklist/')
     document.getElementById('login-input username').value = '';
     document.getElementById('login-input password').value = '';
     reLoad(curPage, 'page-login');
