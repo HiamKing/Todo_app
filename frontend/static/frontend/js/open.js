@@ -28,7 +28,7 @@ function checkLogin() {
 
         var loginBtn = document.getElementById('login-btn');
         loginBtn.addEventListener('click', function() {
-            if( localStorage.getItem('username') !== null ) location.replace('tasklist/')
+            if( localStorage.getItem('username') !== null ) location.replace(window.location.origin + '/tasklist/')
             reLoad(curPage, 'page-login');
         });
 
@@ -40,7 +40,7 @@ function checkLogin() {
 }
 
 function logout() {
-    var url = 'api/logout/';
+    var url = window.location.origin + '/api/logout/';
 
     fetch(url);
 
@@ -54,7 +54,7 @@ text.addEventListener('click', function() {
 
 text = document.getElementById('login-text');
 text.addEventListener('click', function() {
-    if( localStorage.getItem('username') !== null ) location.replace('tasklist/')
+    if( localStorage.getItem('username') !== null ) location.replace(window.location.origin + '/tasklist/')
     document.getElementById('login-input username').value = '';
     document.getElementById('login-input password').value = '';
     reLoad(curPage, 'page-login');

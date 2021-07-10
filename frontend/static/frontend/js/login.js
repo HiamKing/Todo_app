@@ -1,5 +1,5 @@
 function login() {  
-    var url = 'api/login/';
+    var url = window.location.origin + '/api/login/';
     var username = document.getElementById('login-input username').value;
     var password = document.getElementById('login-input password').value;
 
@@ -25,7 +25,7 @@ function login() {
             `;
         } else {
             localStorage.setItem('username', data.username);
-            location.replace('tasklist/');
+            location.replace(window.location.origin + '/tasklist/');
         }
     });
 }

@@ -68,7 +68,7 @@ function checkEmail() {
 }
 
 function register() {
-    var url = 'api/register/';
+    var url = window.location.origin + '/api/register/';
 
     checkUserName();
     checkPassword();

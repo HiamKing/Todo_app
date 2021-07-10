@@ -1,12 +1,12 @@
 function buildList() {
     var wrapper = document.getElementById('list-wrapper');              
-    var url = `api/tasklist/`;
+    var url = window.location.origin + `/api/tasklist/`;
 
     fetch(url)
     .then((resp) => resp.json())
     .then(function(data) {
         console.log('Data', data);
-        if( data.error != null ) location.replace('');
+        if( data.error != null ) location.replace(window.location.origin + "/");
 
         var list = data;
         for(var i in list) {
@@ -68,7 +68,7 @@ function submitTask(e) {
     e.preventDefault();
     console.log('Form submited');
 
-    var url = `api/tasklist/`;
+    var url = window.location.origin + `/api/tasklist/`;
     var title = document.getElementById('title').value
 
     fetch(url, {
@@ -105,7 +105,7 @@ function editTask(item) {
 
 
 function submitChangeTask(id) {
-    var url = `api/tasklist/`;
+    var url = window.location.origin + `/api/tasklist/`;
 
     var dataChange = document.getElementById('change_data').value;
 
@@ -125,7 +125,7 @@ function submitChangeTask(id) {
 
 function deleteTask(item) {
     if(confirm('Are you sure you want to delete this task ?')) {
-        var url = `api/tasklist/`;
+        var url = window.location.origin + `/api/tasklist/`;
 
         document.getElementById(`data-row-${item.id}`).remove();
         fetch(url, {
@@ -145,7 +145,7 @@ function deleteTask(item) {
 function markDone(item) {
     item.completed = !item.completed;
 
-    var url = `api/tasklist/`;
+    var url = window.location.origin + `/api/tasklist/`;
 
     fetch(url, {
         method: 'PUT',
@@ -161,12 +161,12 @@ function markDone(item) {
 
 
 function logout() {
-    var url = 'api/logout/';
+    var url = window.location.origin + '/api/logout/';
 
     fetch(url);
 
     localStorage.removeItem('username');
-    location.replace('')
+    location.replace(window.location.origin + "/")
 }
 
 
